@@ -10,11 +10,11 @@ export const ScreenshotsContainer = styled.div`
     height: 15rem;
     max-width: 100%;
 
-    @media(min-width: 720px) {
+    @media (min-width: 720px) {
       height: 30rem;
     }
 
-    @media(min-width: 1024px) {
+    @media (min-width: 1024px) {
       height: 40rem;
     }
   }

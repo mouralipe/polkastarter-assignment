@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 interface GameData {
   id: string
   name: string
