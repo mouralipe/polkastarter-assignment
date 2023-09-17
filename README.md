@@ -4,7 +4,7 @@
 
 ## Useful Links
 
-* [Application on Vercel](https://futurelink.com/)
+* [Application on Vercel](https://polkastarter-assignment.vercel.app/)
 
 
 <hr />
