@@ -40,7 +40,6 @@ export function GameCard(game: GameCardProps) {
           alt={game?.name}
           width={400}
           height={200}
-          objectFit="cover"
         />
       </ImageContainer>
 

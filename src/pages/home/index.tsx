@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import Head from 'next/head'
 import { useQuery } from '@tanstack/react-query'
 import { MagnifyingGlass, CaretRight, CaretLeft } from '@phosphor-icons/react'
 
@@ -51,91 +52,97 @@ export default function Home() {
   }, [searchTerm, newSearchTerm])
 
   return (
-    <Container>
-      <h1>Highest Rated Games of 2023</h1>
+    <>
+      <Head>
+        <title>Home</title>
+      </Head>
 
-      <SearchBarContainer>
-        <input
-          type="text"
-          placeholder="Search a game by name..."
-          value={searchTerm}
-          onChange={(event) => setSearchTerm(event.target.value)}
-          maxLength={50}
-        />
+      <Container>
+        <h1>Highest Rated Games of 2023</h1>
 
-        <MagnifyingGlass size={30} />
-      </SearchBarContainer>
+        <SearchBarContainer>
+          <input
+            type="text"
+            placeholder="Search a game by name..."
+            value={searchTerm}
+            onChange={(event) => setSearchTerm(event.target.value)}
+            maxLength={50}
+          />
 
-      {(isLoading || isError) && (
-        <Feedback
-          isLoading={isLoading}
-          isError={isError}
-          errorMessage="Error in loading games"
-        />
-      )}
+          <MagnifyingGlass size={30} />
+        </SearchBarContainer>
 
-      {gamesAndPagination?.results &&
-        gamesAndPagination.results.length === 0 && (
+        {(isLoading || isError) && (
           <Feedback
-            isError
-            errorMessage={`We're sorry. We were not able to find a match for "${newSearchTerm}".`}
+            isLoading={isLoading}
+            isError={isError}
+            errorMessage="Error in loading games"
           />
         )}
 
-      <GamesContainer>
-        {gamesAndPagination?.results?.map((game) => (
-          <GameCard
-            key={game.id}
-            id={game.id}
-            name={game.name}
-            slug={game.slug}
-            background_image={game.background_image}
-            genres={game.genres}
-            platforms={game.platforms}
-          />
-        ))}
-      </GamesContainer>
-
-      <PaginationContainer>
-        <Select
-          defaultValue={String(pageSize)}
-          onValueChange={(value) => handleChangePageSize(value)}
-          placeholder={`Show ${pageSize} results`}
-          items={[
-            { label: 'Show 8 results', value: '8' },
-            { label: 'Show 16 results', value: '16' },
-            { label: 'Show 32 results', value: '32' },
-          ]}
-        />
-
-        <Pagination>
-          {totalPages > 0 && (
-            <p>
-              <span>{currentPage}</span> / {totalPages}
-            </p>
+        {gamesAndPagination?.results &&
+          gamesAndPagination.results.length === 0 && (
+            <Feedback
+              isError
+              errorMessage={`We're sorry. We were not able to find a match for "${newSearchTerm}".`}
+            />
           )}
 
-          <div>
-            <button
-              onClick={() => setCurrentPage((state) => state - 1)}
-              disabled={currentPage === 1 || totalPages === 0}
-            >
-              <CaretLeft size={20} />
-            </button>
+        <GamesContainer>
+          {gamesAndPagination?.results?.map((game) => (
+            <GameCard
+              key={game.id}
+              id={game.id}
+              name={game.name}
+              slug={game.slug}
+              background_image={game.background_image}
+              genres={game.genres}
+              platforms={game.platforms}
+            />
+          ))}
+        </GamesContainer>
 
-            <button
-              onClick={() => setCurrentPage((state) => state + 1)}
-              disabled={
-                currentPage === gamesAndPagination?.count ||
-                currentPage === totalPages ||
-                totalPages === 0
-              }
-            >
-              <CaretRight size={20} />
-            </button>
-          </div>
-        </Pagination>
-      </PaginationContainer>
-    </Container>
+        <PaginationContainer>
+          <Select
+            defaultValue={String(pageSize)}
+            onValueChange={(value) => handleChangePageSize(value)}
+            placeholder={`Show ${pageSize} results`}
+            items={[
+              { label: 'Show 8 results', value: '8' },
+              { label: 'Show 16 results', value: '16' },
+              { label: 'Show 32 results', value: '32' },
+            ]}
+          />
+
+          <Pagination>
+            {totalPages > 0 && (
+              <p>
+                <span>{currentPage}</span> / {totalPages}
+              </p>
+            )}
+
+            <div>
+              <button
+                onClick={() => setCurrentPage((state) => state - 1)}
+                disabled={currentPage === 1 || totalPages === 0}
+              >
+                <CaretLeft size={20} />
+              </button>
+
+              <button
+                onClick={() => setCurrentPage((state) => state + 1)}
+                disabled={
+                  currentPage === gamesAndPagination?.count ||
+                  currentPage === totalPages ||
+                  totalPages === 0
+                }
+              >
+                <CaretRight size={20} />
+              </button>
+            </div>
+          </Pagination>
+        </PaginationContainer>
+      </Container>
+    </>
   )
 }

@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useQuery } from '@tanstack/react-query'
 
@@ -40,16 +41,22 @@ export default function Game() {
   }
 
   return (
-    <Container>
-      <ScreenshotsComponent gameId={gameInfo?.id} />
+    <>
+      <Head>
+        <title>{gameInfo.name}</title>
+      </Head>
 
-      <section>
-        <h1>{gameInfo.name}</h1>
+      <Container>
+        <ScreenshotsComponent gameId={gameInfo?.id} />
 
-        <Details gameInfo={gameInfo} />
+        <section>
+          <h1>{gameInfo.name}</h1>
 
-        <Additions gameId={gameInfo?.id} />
-      </section>
-    </Container>
+          <Details gameInfo={gameInfo} />
+
+          <Additions gameId={gameInfo?.id} />
+        </section>
+      </Container>
+    </>
   )
 }

@@ -7,7 +7,7 @@ export const Container = styled(motion.button)`
   text-align: left;
 
   min-width: 17rem;
-  height: 25rem;
+  height: 27rem;
 
   background-color: var(--blue-800);
   color: var(--white);
@@ -57,10 +57,12 @@ export const CardInformation = styled.div`
 
 export const ImageContainer = styled.div`
   margin: 0 auto;
-  min-height: 12.5rem;
+  height: 12.5rem;
+  width: 100%;
 
   > img {
     width: 100%;
     object-fit: cover;
+    border-radius: 3px 3px 0 0;
   }
 `
