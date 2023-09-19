@@ -6,7 +6,7 @@ export async function getGamesAndPagination(
   search: string,
 ) {
   const { data } = await api.get<GamesAndPaginationData>(
-    `/games?dates=2023-01-01,2023-12-31&metacritic=70,100&ordering=metacritic&page=${page}&page_size=${pageSize}&search=${search}&search_exact=true`,
+    `/games?dates=2023-01-01,2023-12-31&metacritic=70,100&ordering=-metacritic&page=${page}&page_size=${pageSize}&search=${search}&search_exact=true`,
   )
   return data
 }
