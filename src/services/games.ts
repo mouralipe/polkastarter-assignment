@@ -24,7 +24,7 @@ export async function getGameScreenshots(id?: string) {
     }
 
   const { data } = await api.get<GameScreenshotsData>(
-    `/games/${id}/screenshots`,
+    `/games/${id}/screenshots?page=1&page_size=6`,
   )
   return data
 }

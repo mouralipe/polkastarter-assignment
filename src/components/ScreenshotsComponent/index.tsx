@@ -1,18 +1,27 @@
-import { useQuery } from '@tanstack/react-query'
+import { useState } from 'react'
 import Image from 'next/image'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Navigation, Pagination, A11y, Autoplay } from 'swiper/modules'
+import { useQuery } from '@tanstack/react-query'
+import SwiperCore from 'swiper'
+import { SwiperSlide } from 'swiper/react'
+import { Navigation, Pagination, A11y, Autoplay, Thumbs } from 'swiper/modules'
 
 import { getGameScreenshots } from '@/services/games'
 import { Feedback } from '@/components/Feedback'
 
-import { ScreenshotsContainer } from './styles'
+import {
+  ScreenshotsContainer,
+  MainSwiper,
+  ThumbsSwiper,
+  ThumbSwiperSlide,
+} from './styles'
 
 interface ScreenshotsComponentProps {
   gameId?: string
 }
 
 export function ScreenshotsComponent({ gameId }: ScreenshotsComponentProps) {
+  const [thumbsSwiper, setThumbsSwiper] = useState<SwiperCore>()
+
   const imagePlaceholder =
     'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/800px-No-Image-Placeholder.svg.png'
 
@@ -30,6 +39,22 @@ export function ScreenshotsComponent({ gameId }: ScreenshotsComponentProps) {
     },
   )
 
+  function calcThumbsPerView() {
+    if (!screenshots?.results) {
+      return 1
+    }
+
+    if (screenshots.results.length <= 4) {
+      return screenshots.results.length
+    }
+
+    return window?.matchMedia('(min-width: 1024px)')?.matches
+      ? screenshots.results.length
+      : 4
+  }
+
+  const thumbsPerView = calcThumbsPerView()
+
   if (isLoading || isError) {
     return (
       <Feedback
@@ -46,12 +71,12 @@ export function ScreenshotsComponent({ gameId }: ScreenshotsComponentProps) {
 
   return (
     <ScreenshotsContainer>
-      <Swiper
-        modules={[Navigation, Pagination, A11y, Autoplay]}
+      <MainSwiper
+        modules={[Navigation, Pagination, A11y, Autoplay, Thumbs]}
         slidesPerView={1}
-        navigation
-        pagination={{ clickable: true }}
         autoplay={{ delay: 2000 }}
+        thumbs={thumbsSwiper ? { swiper: thumbsSwiper } : undefined}
+        navigation={window?.matchMedia('(max-width: 720px)').matches}
       >
         {screenshots?.results?.map((screenshot, index) => (
           <SwiperSlide key={index}>
@@ -64,7 +89,29 @@ export function ScreenshotsComponent({ gameId }: ScreenshotsComponentProps) {
             />
           </SwiperSlide>
         ))}
-      </Swiper>
+      </MainSwiper>
+
+      <ThumbsSwiper
+        modules={[Thumbs, Navigation]}
+        watchSlidesProgress
+        onSwiper={setThumbsSwiper}
+        spaceBetween={8}
+        navigation
+        slidesPerView={thumbsPerView}
+        imagesNumber={thumbsPerView}
+        slideActiveClass="swiper-slide-thumb-active"
+      >
+        {screenshots?.results?.map((screenshot, index) => (
+          <ThumbSwiperSlide key={index}>
+            <Image
+              src={screenshot?.image || imagePlaceholder}
+              alt={`Screenshot ${index}`}
+              width={150}
+              height={100}
+            />
+          </ThumbSwiperSlide>
+        ))}
+      </ThumbsSwiper>
     </ScreenshotsContainer>
   )
 }
