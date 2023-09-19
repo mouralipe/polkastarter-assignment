@@ -36,6 +36,9 @@ export const CardInformation = styled.div`
     font-family: Anton, sans-serif;
     letter-spacing: 0.03em;
     text-transform: uppercase;
+    max-height: 5.6rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   > section {
