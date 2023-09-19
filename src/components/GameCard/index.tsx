@@ -1,6 +1,8 @@
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 
+import { motion } from '@/styles/animations'
+
 import { CardInformation, Container, ImageContainer } from './styles'
 
 type GameCardProps = GameData
@@ -10,21 +12,6 @@ export function GameCard(game: GameCardProps) {
 
   const imagePlaceholder =
     'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/800px-No-Image-Placeholder.svg.png'
-
-  const motion = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        type: 'spring',
-        stiffness: 300,
-        damping: 80,
-        delay: 0.3,
-        delayChildren: 0.3,
-        staggerChildren: 0.2,
-      },
-    },
-  }
 
   return (
     <Container

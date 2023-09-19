@@ -91,11 +91,11 @@ export function ScreenshotsComponent({ gameId }: ScreenshotsComponentProps) {
         // navigation={window?.matchMedia('(max-width: 720px)').matches}
         // thumbs={thumbsSwiper ? { swiper: thumbsSwiper } : undefined}
       >
-        {screenshots?.results?.map((screenshot, index) => (
-          <SwiperSlide key={index}>
+        {screenshots?.results?.map((screenshot) => (
+          <SwiperSlide key={screenshot.id}>
             <Image
               src={screenshot?.image || imagePlaceholder}
-              alt={`Screenshot ${index}`}
+              alt={`Screenshot ${screenshot.id}`}
               width={1300}
               height={1300}
               priority

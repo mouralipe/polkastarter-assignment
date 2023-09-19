@@ -30,6 +30,7 @@ interface GameDetailsData {
 interface GameScreenshotsData {
   count: number
   results: {
+    id: string
     image: string
   }[]
 }

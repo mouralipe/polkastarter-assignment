@@ -3,10 +3,10 @@ import Head from 'next/head'
 import { useQuery } from '@tanstack/react-query'
 import { MagnifyingGlass, CaretRight, CaretLeft } from '@phosphor-icons/react'
 
-import { getGamesAndPagination } from '@/services/games'
 import { GameCard } from '@/components/GameCard'
 import { Select } from '@/components/Select'
 import { Feedback } from '@/components/Feedback'
+import { getGamesAndPagination } from '@/services/games'
 
 import {
   Container,
