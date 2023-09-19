@@ -23,7 +23,7 @@ export const MainSwiper = styled(Swiper)`
     }
 
     @media (min-width: 1024px) {
-      height: 34rem;
+      height: 35rem;
     }
   }
 `
