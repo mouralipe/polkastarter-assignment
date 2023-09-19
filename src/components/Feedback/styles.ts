@@ -17,7 +17,7 @@ export const Container = styled.div`
   color: var(--white);
   width: 100%;
   height: 100%;
-  min-height: 20rem;
+  min-height: 30rem;
 
   > svg {
     animation: ${spinAnimation} 2s linear infinite;
