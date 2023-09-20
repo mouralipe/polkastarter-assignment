@@ -8,10 +8,20 @@ interface DetailsProps {
 }
 
 export function Details({ gameInfo }: DetailsProps) {
-  const gamesCache: GamesAndPaginationData | undefined =
-    queryClient.getQueryData(['gamesAndPagination'], {
+  const gamesCache = queryClient
+    .getQueryCache()
+    .findAll(['gamesAndPagination'], {
       exact: false,
     })
+    .find((query) => {
+      const data = query.state.data as GamesAndPaginationData
+
+      const results = data?.results as GameData[]
+
+      const gameFound = results.find((game) => game?.id === gameInfo?.id)
+
+      return gameFound
+    })?.state.data as GamesAndPaginationData
 
   const metacritic =
     gameInfo?.metacritic ||
