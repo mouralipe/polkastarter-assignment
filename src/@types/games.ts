@@ -5,6 +5,7 @@ interface GameData {
   name: string
   slug: string
   background_image: string
+  metacritic?: number
   genres: {
     id: string
     name: string

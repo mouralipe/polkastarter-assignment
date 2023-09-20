@@ -21,7 +21,7 @@ export default function Game() {
     isLoading,
     isError,
   } = useQuery(
-    ['game', slug],
+    ['gameDetails', slug],
     () => {
       return getGameDetails(slug as string)
     },

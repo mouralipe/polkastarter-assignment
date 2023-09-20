@@ -26,9 +26,12 @@ export default function Home() {
     data: gamesAndPagination,
     isLoading,
     isError,
-  } = useQuery(['games', currentPage, newSearchTerm, pageSize], () => {
-    return getGamesAndPagination(pageSize, currentPage, searchTerm)
-  })
+  } = useQuery(
+    ['gamesAndPagination', currentPage, newSearchTerm, pageSize],
+    () => {
+      return getGamesAndPagination(pageSize, currentPage, searchTerm)
+    },
+  )
 
   const totalPages = gamesAndPagination?.count
     ? Math.ceil(gamesAndPagination?.count / pageSize)

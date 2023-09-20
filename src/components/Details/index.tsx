@@ -1,3 +1,4 @@
+import { queryClient } from '@/lib/react-query'
 import { formatDateDefault } from '@/utils/date'
 
 import { DetailsContainer } from './styles'
@@ -7,6 +8,15 @@ interface DetailsProps {
 }
 
 export function Details({ gameInfo }: DetailsProps) {
+  const gamesCache: GamesAndPaginationData | undefined =
+    queryClient.getQueryData(['gamesAndPagination'], {
+      exact: false,
+    })
+
+  const metacritic =
+    gameInfo?.metacritic ||
+    gamesCache?.results?.find((game) => game?.id === gameInfo?.id)?.metacritic
+
   return (
     <DetailsContainer>
       {gameInfo?.description && (
@@ -23,10 +33,10 @@ export function Details({ gameInfo }: DetailsProps) {
         </div>
       )}
 
-      {gameInfo?.metacritic && (
+      {metacritic && (
         <div>
           <h3>Metacritic Rating</h3>
-          <p>{gameInfo?.metacritic}</p>
+          <p>{metacritic}</p>
         </div>
       )}
     </DetailsContainer>
