@@ -16,7 +16,7 @@ export function Details({ gameInfo }: DetailsProps) {
     .find((query) => {
       const data = query.state.data as GamesAndPaginationData
 
-      const results = data?.results as GameData[]
+      const results = (data?.results as GameData[]) || []
 
       const gameFound = results.find((game) => game?.id === gameInfo?.id)
 
