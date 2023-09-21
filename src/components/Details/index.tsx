@@ -1,6 +1,8 @@
 import { queryClient } from '@/lib/react-query'
 import { formatDateDefault } from '@/utils/date'
 
+import { useGameAndPagination } from '@/hooks/useGameAndPagination'
+
 import { DetailsContainer } from './styles'
 
 interface DetailsProps {
@@ -8,24 +10,19 @@ interface DetailsProps {
 }
 
 export function Details({ gameInfo }: DetailsProps) {
-  const gamesCache = queryClient
-    .getQueryCache()
-    .findAll(['gamesAndPagination'], {
-      exact: false,
-    })
-    .find((query) => {
-      const data = query.state.data as GamesAndPaginationData
+  const { currentPage, newSearchTerm, pageSize } = useGameAndPagination()
 
-      const results = (data?.results as GameData[]) || []
-
-      const gameFound = results.find((game) => game?.id === gameInfo?.id)
-
-      return gameFound
-    })?.state.data as GamesAndPaginationData
+  const gamesAndPaginationCache = queryClient.getQueryData([
+    'gamesAndPagination',
+    currentPage,
+    newSearchTerm,
+    pageSize,
+  ]) as GamesAndPaginationData
 
   const metacritic =
     gameInfo?.metacritic ||
-    gamesCache?.results?.find((game) => game?.id === gameInfo?.id)?.metacritic
+    gamesAndPaginationCache?.results?.find((game) => game?.id === gameInfo?.id)
+      ?.metacritic
 
   return (
     <DetailsContainer>

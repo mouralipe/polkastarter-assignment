@@ -3,10 +3,11 @@ import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import 'swiper/css/thumbs'
 import type { AppProps } from 'next/app'
-import { QueryClientProvider } from '@tanstack/react-query'
 import Head from 'next/head'
+import { QueryClientProvider } from '@tanstack/react-query'
 
 import { queryClient } from '@/lib/react-query'
+import { GameAndPaginationProvider } from '@/hooks/useGameAndPagination'
 import GlobalStyles from '@/styles/global'
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -17,8 +18,10 @@ export default function App({ Component, pageProps }: AppProps) {
       </Head>
 
       <QueryClientProvider client={queryClient}>
-        <Component {...pageProps} />
-        <GlobalStyles />
+        <GameAndPaginationProvider>
+          <Component {...pageProps} />
+          <GlobalStyles />
+        </GameAndPaginationProvider>
       </QueryClientProvider>
     </>
   )

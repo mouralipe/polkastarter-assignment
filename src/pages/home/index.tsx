@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import Head from 'next/head'
 import { useQuery } from '@tanstack/react-query'
 import { MagnifyingGlass, CaretRight, CaretLeft } from '@phosphor-icons/react'
@@ -7,6 +7,7 @@ import { GameCard } from '@/components/GameCard'
 import { Select } from '@/components/Select'
 import { Feedback } from '@/components/Feedback'
 import { getGamesAndPagination } from '@/services/games'
+import { useGameAndPagination } from '@/hooks/useGameAndPagination'
 
 import {
   Container,
@@ -17,10 +18,16 @@ import {
 } from './styles'
 
 export default function Home() {
-  const [searchTerm, setSearchTerm] = useState('')
-  const [newSearchTerm, setNewSearchTerm] = useState('')
-  const [currentPage, setCurrentPage] = useState(1)
-  const [pageSize, setPageSize] = useState(16)
+  const {
+    searchTerm,
+    newSearchTerm,
+    currentPage,
+    pageSize,
+    handleChangePageSize,
+    handleChangeCurrentPage,
+    handleChangeSearchTerm,
+    handleChangeNewSearchTerm,
+  } = useGameAndPagination()
 
   const {
     data: gamesAndPagination,
@@ -37,22 +44,22 @@ export default function Home() {
     ? Math.ceil(gamesAndPagination?.count / pageSize)
     : 0
 
-  function handleChangePageSize(value: string) {
-    setCurrentPage(1)
-    setPageSize(Number(value))
-  }
-
   useEffect(() => {
     // Debounce for search
     if (searchTerm !== newSearchTerm) {
       const timerId = setTimeout(() => {
-        setNewSearchTerm(searchTerm)
-        setCurrentPage(1)
+        handleChangeNewSearchTerm(searchTerm)
+        handleChangeCurrentPage(1)
       }, 750)
 
       return () => clearTimeout(timerId)
     }
-  }, [searchTerm, newSearchTerm])
+  }, [
+    searchTerm,
+    newSearchTerm,
+    handleChangeNewSearchTerm,
+    handleChangeCurrentPage,
+  ])
 
   return (
     <>
@@ -68,7 +75,7 @@ export default function Home() {
             type="text"
             placeholder="Search a game by name..."
             value={searchTerm}
-            onChange={(event) => setSearchTerm(event.target.value)}
+            onChange={(event) => handleChangeSearchTerm(event.target.value)}
             maxLength={50}
           />
 
@@ -108,7 +115,7 @@ export default function Home() {
         <PaginationContainer>
           <Select
             defaultValue={String(pageSize)}
-            onValueChange={(value) => handleChangePageSize(value)}
+            onValueChange={(value) => handleChangePageSize(Number(value))}
             placeholder={`Show ${pageSize} results`}
             items={[
               { label: 'Show 8 results', value: '8' },
@@ -126,14 +133,14 @@ export default function Home() {
 
             <div>
               <button
-                onClick={() => setCurrentPage((state) => state - 1)}
+                onClick={() => handleChangeCurrentPage(currentPage - 1)}
                 disabled={currentPage === 1 || totalPages === 0}
               >
                 <CaretLeft size={20} />
               </button>
 
               <button
-                onClick={() => setCurrentPage((state) => state + 1)}
+                onClick={() => handleChangeCurrentPage(currentPage + 1)}
                 disabled={
                   currentPage === gamesAndPagination?.count ||
                   currentPage === totalPages ||
